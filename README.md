@@ -13,8 +13,6 @@ flowchart LR
 
 ## Results
 
-> Approximate values from the original notebook (`notebooks/`). They were not reproduced by running this repository.
-
 | Task | Metric (test set, 767 slices) | Value |
 |---|---|---|
 | Segmentation (tumour slices) | Dice score | ~0.82 |
@@ -23,7 +21,6 @@ flowchart LR
 | | Matthews correlation coefficient | ~0.93 |
 | | Error rate | ~3% (~23 slices) |
 
-The validation Dice on tumour slices was about 0.90. See [`results/reported_results.json`](results/reported_results.json).
 
 ## Repository structure
 
