@@ -1,0 +1,17 @@
+{
+  "_notice": "Approximate values as written in the text of notebooks/Brain-tumor-semantic-segmentation.ipynb (observation and conclusion cells). The saved notebook contains no cell outputs, so exact figures are not available. These values were not produced by running this repository.",
+  "test_set": {
+    "n_images": 767,
+    "segmentation_tumour_images": {
+      "dice_score": "~0.82",
+      "IoU (Jaccard index)": "~0.73"
+    },
+    "validation_dice_tumour_images": "~0.90",
+    "diagnosis_tumour_vs_normal": {
+      "f1_score": "~0.96",
+      "matthews_corrcoef": "~0.93",
+      "error_rate": "~3%",
+      "misclassified_images": "~23 of 767"
+    }
+  }
+}

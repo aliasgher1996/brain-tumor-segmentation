@@ -1,0 +1,36 @@
+# Brain tumour segmentation with U-Net (LGG MRI Segmentation dataset)
+# Every value mirrors the original notebook (notebooks/Brain-tumor-semantic-segmentation.ipynb)
+# unless it is marked [ADDED], which means it is a new option whose default keeps the notebook's behaviour.
+
+data:
+  root: ./data/kaggle_3m          # folder with one sub-folder per patient containing *.tif and *_mask.tif
+  image_size: 224                 # images and masks are resized to 224 x 224
+  in_channels: 3
+  val_test_fraction: 0.30         # 70% train / 30% held out (stratified by diagnosis)
+  test_fraction_of_heldout: 0.65  # held-out 30% -> 35% validation / 65% test  => 70 / 10.5 / 19.5 %
+  split_by_patient: false         # [ADDED] true = keep all slices of a patient in one subset (no leakage)
+  seed: 768
+
+augmentation:                     # training set only (albumentations)
+  brightness_contrast_p: 0.2
+  horizontal_flip_p: 0.5
+  vertical_flip_p: 0.5
+
+model:
+  block_sizes: [64, 128, 256, 512]  # U-Net encoder widths; bottleneck = 1024
+  out_channels: 1                   # binary tumour mask (logits)
+
+train:
+  epochs: 100
+  batch_size: 32                  # multiplied by the number of GPUs when more than one is used
+  num_workers: 4
+  learning_rate: 1.0e-4           # AdamW (PyTorch default weight decay 0.01)
+  plateau_patience: 8             # ReduceLROnPlateau on validation loss
+  data_parallel: true             # use nn.DataParallel when several GPUs are visible
+  save_best: true                 # [ADDED] also keep the checkpoint with the best validation Dice
+  output_dir: ./runs/unet
+
+evaluation:
+  mask_threshold: 0.5             # threshold for predicted masks and the tumour / normal diagnosis
+  metric_threshold: 0.3           # threshold the notebook used when computing segmentation metrics
+  checkpoint: final               # final | best  (the notebook evaluated the final-epoch model)
